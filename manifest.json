@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-for-ai",
+  "name": "Obsidian for AI",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "AI-assisted knowledge tools for Obsidian.",
+  "author": "kbssbk",
+  "isDesktopOnly": false
+}
