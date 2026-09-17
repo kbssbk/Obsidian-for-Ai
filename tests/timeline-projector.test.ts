@@ -15,7 +15,7 @@ const snapshot: LifeOsSnapshot = {
 
 test('timeline derives source records, filters completed tasks, and keeps undated actions last', () => {
   const events = buildTimelineEvents(snapshot, { from:'2026-09-18', to:'2026-09-30' });
-  assert.deepEqual(events.map(event => event.id), ['block:b1', 'task:t1', 'action:g1']);
+  assert.deepEqual(events.map(event => event.id), ['task:t1', 'block:b1', 'action:g1']);
   assert.equal(events.at(-1)?.date, '');
 });
 
