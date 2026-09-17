@@ -1,9 +1,9 @@
 {
   "id": "obsidian-for-ai",
-  "name": "Life OS for Obsidian",
-  "version": "0.2.0",
+  "name": "라이프 OS",
+  "version": "0.3.0",
   "minAppVersion": "1.5.0",
-  "description": "Markdown 기반 오늘 대시보드, 업무 진행도, 통합 타임라인을 하나로 연결합니다.",
+  "description": "마크다운 기반 오늘 대시보드, 일정, 업무, 목표, 습관, 사람, 돈, 회고를 하나로 연결하는 한국어 생활 관리 플러그인입니다.",
   "author": "kbssbk",
   "isDesktopOnly": false
 }
