@@ -1,4 +1,4 @@
-import type { LifeOsHabit, LifeOsSnapshot, LifeOsTask } from '../../core/domain';
+import type { LifeOsBlock, LifeOsHabit, LifeOsSnapshot, LifeOsTask } from '../../core/domain';
 
 export const TIME_SAVING_SOURCE_URL = 'https://wol.jw.org/ko/wol/d/r8/lp-ko/102010124';
 
@@ -77,12 +77,48 @@ export function habitStreak(habit: LifeOsHabit, today: string): number {
   return count;
 }
 
+function minutes(time: string): number {
+  const [hours, mins] = time.split(':').map(Number);
+  return hours * 60 + mins;
+}
+
+function clock(value: number): string {
+  return `${String(Math.floor(value / 60)).padStart(2, '0')}:${String(value % 60).padStart(2, '0')}`;
+}
+
+export function findScheduleConflicts(blocks: LifeOsBlock[]): Array<{ a: LifeOsBlock; b: LifeOsBlock }> {
+  const active = blocks.filter((block) => block.status !== 'done');
+  return active.flatMap((a, index) => active.slice(index + 1)
+    .filter((b) => a.date === b.date && a.startTime < b.endTime && b.startTime < a.endTime)
+    .map((b) => ({ a, b })));
+}
+
+export function findOpenSlot(blocks: LifeOsBlock[], date: string, duration = 30, earliest = 9 * 60): { startTime: string; endTime: string } | null {
+  // Keep intentional open space rather than filling every minute.
+  // Source: https://wol.jw.org/ko/wol/d/r8/lp-ko/102010124
+  const booked = blocks.filter((block) => block.date === date && block.status !== 'done').sort((a,b) => a.startTime.localeCompare(b.startTime));
+  let start = Math.max(9 * 60, earliest);
+  for (const block of booked) {
+    if (start + duration <= minutes(block.startTime)) break;
+    if (start < minutes(block.endTime)) start = minutes(block.endTime);
+  }
+  return start + duration <= 21 * 60 ? { startTime:clock(start), endTime:clock(start + duration) } : null;
+}
+
 export function computeReviewStats(snapshot: LifeOsSnapshot, today: string) {
   const completed = snapshot.tasks.filter((task) => task.status === 'done').length;
+  const month = today.slice(0, 7);
+  const monthMoney = (snapshot.moneyEntries ?? []).filter((entry) => entry.date.startsWith(month));
   return {
     tasks: { completed, total: snapshot.tasks.length },
     habits: (snapshot.habits ?? []).map((habit) => ({ id: habit.id, title: habit.title, streak: habitStreak(habit, today) })),
     overdueOpen: snapshot.tasks.filter((task) => task.status !== 'done' && task.due && task.due < today).length,
-    activeProjects: snapshot.projects.filter((project) => project.status === 'active').length
+    activeProjects: snapshot.projects.filter((project) => project.status === 'active').length,
+    activeGoals: (snapshot.goals ?? []).filter((goal) => goal.status === 'active').length,
+    duePeople: (snapshot.people ?? []).filter((person) => person.nextContactDate && person.nextContactDate <= today).length,
+    money: {
+      income: monthMoney.filter((entry) => entry.kind === 'income').reduce((sum, entry) => sum + entry.amount, 0),
+      expense: monthMoney.filter((entry) => entry.kind === 'expense').reduce((sum, entry) => sum + entry.amount, 0)
+    }
   };
 }
