@@ -3,6 +3,7 @@ import { VaultRepository } from './core/vault-repository';
 import { DashboardView, DASHBOARD_VIEW_TYPE } from './features/dashboard/dashboard-view';
 import { ProjectsView, PROJECTS_VIEW_TYPE } from './features/projects/projects-view';
 import { TimelineView, TIMELINE_VIEW_TYPE } from './features/timeline/timeline-view';
+import { PlannerView, PLANNER_VIEW_TYPE } from './features/planner/planner-view';
 import { DEFAULT_SETTINGS, LifeOsSettingTab, type LifeOsSettings } from './settings';
 
 export default class LifeOsPlugin extends Plugin {
@@ -16,11 +17,13 @@ export default class LifeOsPlugin extends Plugin {
     this.registerView(DASHBOARD_VIEW_TYPE, (leaf) => new DashboardView(leaf, this.repository, () => this.settings));
     this.registerView(PROJECTS_VIEW_TYPE, (leaf) => new ProjectsView(leaf, this.repository, () => this.settings));
     this.registerView(TIMELINE_VIEW_TYPE, (leaf) => new TimelineView(leaf, this.repository, () => this.settings));
+    this.registerView(PLANNER_VIEW_TYPE, (leaf) => new PlannerView(leaf, this.repository));
 
     this.addRibbonIcon('layout-dashboard', 'Life OS 열기', () => void this.openView(DASHBOARD_VIEW_TYPE));
     this.addCommand({ id:'open-life-os-dashboard', name:'Life OS: 오늘 열기', callback:() => void this.openView(DASHBOARD_VIEW_TYPE) });
     this.addCommand({ id:'open-life-os-projects', name:'Life OS: 업무 현황 열기', callback:() => void this.openView(PROJECTS_VIEW_TYPE) });
     this.addCommand({ id:'open-life-os-timeline', name:'Life OS: 타임라인 열기', callback:() => void this.openView(TIMELINE_VIEW_TYPE) });
+    this.addCommand({ id:'open-life-os-planner', name:'Life OS: 계획·습관·회고 열기', callback:() => void this.openView(PLANNER_VIEW_TYPE) });
 
     this.addSettingTab(new LifeOsSettingTab(this.app, this));
     this.registerEvent(this.app.metadataCache.on('changed', () => void this.refreshOpenViews()));
@@ -30,6 +33,7 @@ export default class LifeOsPlugin extends Plugin {
     this.app.workspace.detachLeavesOfType(DASHBOARD_VIEW_TYPE);
     this.app.workspace.detachLeavesOfType(PROJECTS_VIEW_TYPE);
     this.app.workspace.detachLeavesOfType(TIMELINE_VIEW_TYPE);
+    this.app.workspace.detachLeavesOfType(PLANNER_VIEW_TYPE);
   }
 
   async loadSettings(): Promise<void> {
@@ -57,6 +61,9 @@ export default class LifeOsPlugin extends Plugin {
     }
     for (const leaf of this.app.workspace.getLeavesOfType(TIMELINE_VIEW_TYPE)) {
       if (leaf.view instanceof TimelineView) await leaf.view.render();
+    }
+    for (const leaf of this.app.workspace.getLeavesOfType(PLANNER_VIEW_TYPE)) {
+      if (leaf.view instanceof PlannerView) await leaf.view.render();
     }
   }
 }
