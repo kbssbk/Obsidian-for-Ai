@@ -8,7 +8,7 @@ export class VaultRepository {
   constructor(private readonly app: App) {}
 
   async snapshot(): Promise<LifeOsSnapshot> {
-    const snapshot: LifeOsSnapshot = { blocks: [], tasks: [], projects: [], goalActions: [] };
+    const snapshot: LifeOsSnapshot = { blocks: [], tasks: [], projects: [], goalActions: [], habits: [] };
     for (const file of this.app.vault.getMarkdownFiles()) this.collectFile(file, snapshot);
     return snapshot;
   }
@@ -30,6 +30,17 @@ export class VaultRepository {
     });
   }
 
+  async setHabitCheckin(path: string, date: string, checked: boolean): Promise<void> {
+    const file = this.app.vault.getAbstractFileByPath(path);
+    if (!(file instanceof TFile)) return;
+    await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
+      const existing = Array.isArray(frontmatter.checkins) ? frontmatter.checkins.filter((item): item is string => typeof item === 'string') : [];
+      const next = new Set(existing);
+      if (checked) next.add(date); else next.delete(date);
+      frontmatter.checkins = [...next].sort();
+    });
+  }
+
   private collectFile(file: TFile, snapshot: LifeOsSnapshot): void {
     const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
     if (!frontmatter) return;
@@ -39,5 +50,6 @@ export class VaultRepository {
     if (entity.kind === 'task') snapshot.tasks.push(entity.value);
     if (entity.kind === 'block') snapshot.blocks.push(entity.value);
     if (entity.kind === 'goalAction') snapshot.goalActions.push(entity.value);
+    if (entity.kind === 'habit') snapshot.habits?.push(entity.value);
   }
 }
