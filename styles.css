@@ -1,26 +1,32 @@
 .life-os-view {
-  max-width: 920px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .life-os-view > p { color: var(--text-muted); margin-top: -8px; }
 .life-os-section, .life-os-card { margin-top: 18px; padding: 16px; border: 1px solid var(--background-modifier-border); border-radius: 12px; background: var(--background-primary-alt); }
-.life-os-row, .life-os-card-header, .life-os-timeline-event, .life-os-progress-row { display: flex; align-items: center; gap: 12px; }
+.life-os-row, .life-os-card-header, .life-os-timeline-event, .life-os-progress-row, .life-os-person-row, .life-os-recovery-row, .life-os-schedule-head { display: flex; align-items: center; gap: 12px; }
 .life-os-row { justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
 .life-os-row:last-child { border-bottom: 0; }
-.life-os-card-header, .life-os-progress-row { justify-content: space-between; }
+.life-os-card-header, .life-os-progress-row, .life-os-schedule-head { justify-content: space-between; }
 .life-os-card-header { cursor: pointer; }
 .life-os-chip { display: inline-flex; align-items: center; width: fit-content; padding: 2px 8px; border-radius: 999px; background: var(--background-modifier-hover); color: var(--text-muted); font-size: var(--font-ui-smaller); }
 .life-os-progress-row { margin-top: 10px; }
-.life-os-progress-controls { display: flex; gap: 6px; }
-.life-os-progress-controls button, .life-os-check { min-height: 30px; border: 1px solid var(--background-modifier-border); border-radius: 8px; background: var(--interactive-normal); cursor: pointer; }
+.life-os-progress-controls, .life-os-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.life-os-progress-controls button, .life-os-check, .life-os-actions button, .life-os-schedule-head button, .life-os-recovery-row button { min-height: 30px; border: 1px solid var(--background-modifier-border); border-radius: 8px; background: var(--interactive-normal); cursor: pointer; }
 .life-os-progress-track { height: 8px; margin-top: 6px; overflow: hidden; border-radius: 999px; background: var(--background-modifier-border); }
 .life-os-progress-bar { height: 100%; border-radius: inherit; background: var(--interactive-accent); }
 .life-os-task-list { margin-bottom: 0; padding-left: 0; list-style: none; }
 .life-os-task-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
 .life-os-check { width: 34px; padding: 0; }
 .life-os-task-list span { cursor: pointer; }
+.life-os-task-card { padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); }
+.life-os-task-card:last-child { border-bottom: 0; }
+.life-os-task-card.urgency-overdue { border-left: 3px solid var(--text-error); padding-left: 10px; }
+.life-os-task-card.urgency-today { border-left: 3px solid var(--interactive-accent); padding-left: 10px; }
+.life-os-checkpoints { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 10px; }
+.life-os-stage { display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 8px; background: var(--background-secondary); }
 .life-os-timeline { position: relative; margin-top: 18px; }
 .life-os-timeline-event { display: grid; grid-template-columns: 110px 1fr auto; padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
 .life-os-timeline-date { color: var(--text-muted); font-size: var(--font-ui-small); }
@@ -29,10 +35,34 @@
 .life-os-timeline-event.is-attention { border-left: 3px solid var(--text-error); padding-left: 10px; }
 .life-os-timeline-event.is-done { opacity: .65; }
 .life-os-empty { margin-top: 16px; padding: 18px; border-radius: 10px; background: var(--background-secondary); color: var(--text-muted); }
+.life-os-focus { cursor: pointer; }
+.life-os-signal-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+.life-os-signal { padding: 12px; border: 1px solid var(--background-modifier-border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
+.life-os-signal span { color: var(--text-muted); font-size: var(--font-ui-small); }
+.life-os-recovery-row, .life-os-person-row { justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--background-modifier-border); }
+.life-os-recovery-row > div:first-child, .life-os-person-row > div:first-child { display: flex; flex-direction: column; gap: 2px; }
+.life-os-area-block { padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); }
+.life-os-area-block:last-child { border-bottom: 0; }
+.life-os-budget-row { display: grid; grid-template-columns: minmax(120px,1fr) minmax(140px,2fr) auto; gap: 10px; align-items: center; padding: 8px 0; }
+.life-os-budget-row progress { width: 100%; }
+.life-os-week-grid { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 8px; margin-top: 18px; }
+.life-os-day-column { min-height: 170px; padding: 10px; border: 1px solid var(--background-modifier-border); border-radius: 10px; background: var(--background-primary-alt); }
+.life-os-day-column.is-today { outline: 2px solid var(--interactive-accent); }
+.life-os-day-column > strong { display: block; margin-bottom: 8px; }
+.life-os-time-block { display: flex; flex-direction: column; gap: 2px; padding: 8px; margin: 6px 0; border-radius: 8px; background: var(--background-secondary); cursor: pointer; }
+.life-os-time-block.is-growth { border-left: 3px solid var(--interactive-accent); }
+
+@media (max-width: 800px) {
+  .life-os-week-grid { grid-template-columns: 1fr; }
+  .life-os-signal-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .life-os-checkpoints { grid-template-columns: 1fr; }
+}
 
 @media (max-width: 600px) {
   .life-os-view { padding: 12px; }
   .life-os-timeline-event { grid-template-columns: 1fr auto; }
   .life-os-timeline-date { grid-column: 1 / -1; }
   .life-os-section, .life-os-card { padding: 12px; }
+  .life-os-recovery-row, .life-os-person-row, .life-os-schedule-head { align-items: flex-start; flex-direction: column; }
+  .life-os-budget-row { grid-template-columns: 1fr; }
 }
