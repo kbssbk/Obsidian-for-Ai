@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseLifeOsEntity } from '../src/core/vault-repository.ts';
+import { parseLifeOsEntity } from '../src/core/frontmatter.ts';
 
 test('maps project frontmatter without requiring content migration', () => {
   const entity = parseLifeOsEntity('Projects/통합.md', '통합', {
