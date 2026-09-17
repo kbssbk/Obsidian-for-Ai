@@ -10,6 +10,8 @@ import { TasksView, TASKS_VIEW_TYPE } from './features/tasks/tasks-view';
 import { TimelineView, TIMELINE_VIEW_TYPE } from './features/timeline/timeline-view';
 import { DEFAULT_SETTINGS, LifeOsSettingTab, type LifeOsSettings } from './settings';
 
+function todayIso():string{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+
 export default class LifeOsPlugin extends Plugin {
   settings:LifeOsSettings=DEFAULT_SETTINGS;
   private repository!:VaultRepository;
@@ -27,6 +29,7 @@ export default class LifeOsPlugin extends Plugin {
     this.addRibbonIcon('layout-dashboard','Life OS 열기',()=>void this.openView(DASHBOARD_VIEW_TYPE));
     this.addRibbonIcon('plus-circle','Life OS 빠른 추가',()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open());
     this.addCommand({id:'quick-capture-life-os',name:'Life OS: 빠른 추가',callback:()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open()});
+    this.addCommand({id:'create-life-os-reflection',name:'Life OS: 생각 정리 노트 만들기',callback:()=>void this.createReflection()});
     this.addCommand({id:'open-life-os-dashboard',name:'Life OS: 오늘 열기',callback:()=>void this.openView(DASHBOARD_VIEW_TYPE)});
     this.addCommand({id:'open-life-os-schedule',name:'Life OS: 주간 일정 열기',callback:()=>void this.openView(SCHEDULE_VIEW_TYPE)});
     this.addCommand({id:'open-life-os-projects',name:'Life OS: 프로젝트 진행도 열기',callback:()=>void this.openView(PROJECTS_VIEW_TYPE)});
@@ -41,6 +44,7 @@ export default class LifeOsPlugin extends Plugin {
   onunload():void{for(const type of [DASHBOARD_VIEW_TYPE,SCHEDULE_VIEW_TYPE,PROJECTS_VIEW_TYPE,TASKS_VIEW_TYPE,TIMELINE_VIEW_TYPE,PLANNER_VIEW_TYPE,AREAS_VIEW_TYPE])this.app.workspace.detachLeavesOfType(type);}
   async loadSettings():Promise<void>{this.settings=Object.assign({},DEFAULT_SETTINGS,await this.loadData() as Partial<LifeOsSettings>|null);}
   async saveSettings():Promise<void>{await this.saveData(this.settings);await this.refreshOpenViews();}
+  private async createReflection():Promise<void>{const path=await this.repository.createReflectionNote(`생각 정리 ${todayIso()}`,todayIso());await this.app.workspace.openLinkText(path,'',false);}
   private async openView(type:string):Promise<void>{const existing=this.app.workspace.getLeavesOfType(type)[0];const leaf=existing??this.app.workspace.getLeaf(true);await leaf.setViewState({type,active:true});this.app.workspace.revealLeaf(leaf);}
   private async refreshOpenViews():Promise<void>{
     for(const leaf of this.app.workspace.getLeavesOfType(DASHBOARD_VIEW_TYPE))if(leaf.view instanceof DashboardView)await leaf.view.render();
