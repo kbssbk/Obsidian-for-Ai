@@ -1,4 +1,4 @@
-import type { GoalAction, GoalStatus, HabitFrequency, LifeOsBlock, LifeOsBudget, LifeOsGoal, LifeOsHabit, LifeOsMilestone, LifeOsMoneyEntry, LifeOsPerson, LifeOsProject, LifeOsRecurringPayment, LifeOsSavingsGoal, LifeOsTask, LifeOsStatus, MoneyKind, ProgressMode, ProjectStatus } from './domain';
+import type { GoalAction, GoalStatus, HabitFrequency, LifeOsBlock, LifeOsBudget, LifeOsGoal, LifeOsHabit, LifeOsMilestone, LifeOsMoneyEntry, LifeOsPerson, LifeOsProject, LifeOsRecurringPayment, LifeOsSavingsGoal, LifeOsTask, LifeOsTimeLog, LifeOsStatus, MoneyKind, ProgressMode, ProjectStatus } from './domain';
 
 export type Frontmatter = Record<string, unknown>;
 export type ParsedEntity =
@@ -13,7 +13,8 @@ export type ParsedEntity =
   | { kind:'money'; value:LifeOsMoneyEntry }
   | { kind:'budget'; value:LifeOsBudget }
   | { kind:'recurring'; value:LifeOsRecurringPayment }
-  | { kind:'savings'; value:LifeOsSavingsGoal };
+  | { kind:'savings'; value:LifeOsSavingsGoal }
+  | { kind:'timeLog'; value:LifeOsTimeLog };
 
 function text(value:unknown, fallback=''):string { return typeof value === 'string' ? value : fallback; }
 function bool(value:unknown, fallback=false):boolean { return typeof value === 'boolean' ? value : fallback; }
@@ -38,5 +39,6 @@ export function parseLifeOsEntity(path:string, basename:string, frontmatter:Fron
   if (type === 'budget') return { kind:'budget', value:{ id, month:text(frontmatter.month), category:text(frontmatter.category,'기타'), limitAmount:Math.max(0,number(frontmatter.limit_amount,0)), path } };
   if (type === 'recurring_payment') return { kind:'recurring', value:{ id, title, amount:Math.max(0,number(frontmatter.amount,0)), nextDueDate:text(frontmatter.next_due), active:bool(frontmatter.active,true), path } };
   if (type === 'savings_goal') return { kind:'savings', value:{ id, title, targetAmount:Math.max(0,number(frontmatter.target_amount,0)), currentAmount:Math.max(0,number(frontmatter.current_amount,0)), targetDate:text(frontmatter.target_date), path } };
+  if (type === 'time_log') return { kind:'timeLog', value:{ id, title, date:text(frontmatter.date), startTime:text(frontmatter.start_time), endTime:text(frontmatter.end_time), path, ...(optional(frontmatter.category)?{category:optional(frontmatter.category)}:{}) } };
   return null;
 }
