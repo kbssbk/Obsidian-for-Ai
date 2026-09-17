@@ -26,7 +26,19 @@ export function parseLifeOsEntity(path: string, basename: string, frontmatter: F
   const title = text(frontmatter.title, basename);
 
   if (type === 'project') {
-    return { kind:'project', value:{ id, title, status:text(frontmatter.status, 'active') as ProjectStatus, progressMode:text(frontmatter.progress_mode, 'manual') as ProgressMode, progress:Math.max(0, Math.min(100, number(frontmatter.progress, 0))), start:text(frontmatter.start) || undefined, due:text(frontmatter.due) || undefined, path } };
+    const start = text(frontmatter.start);
+    const due = text(frontmatter.due);
+    const value: LifeOsProject = {
+      id,
+      title,
+      status: text(frontmatter.status, 'active') as ProjectStatus,
+      progressMode: text(frontmatter.progress_mode, 'manual') as ProgressMode,
+      progress: Math.max(0, Math.min(100, number(frontmatter.progress, 0))),
+      path,
+      ...(start ? { start } : {}),
+      ...(due ? { due } : {})
+    };
+    return { kind:'project', value };
   }
   if (type === 'task') {
     return { kind:'task', value:{ id, title, projectId:text(frontmatter.project), due:text(frontmatter.due), status:text(frontmatter.status, 'todo') as LifeOsStatus, researchDone:bool(frontmatter.research_done), draftDone:bool(frontmatter.draft_done), path } };
