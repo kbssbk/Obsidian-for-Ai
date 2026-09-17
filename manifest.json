@@ -1,9 +1,9 @@
 {
   "id": "obsidian-for-ai",
-  "name": "Obsidian for AI",
-  "version": "0.1.0",
+  "name": "Life OS for Obsidian",
+  "version": "0.2.0",
   "minAppVersion": "1.5.0",
-  "description": "AI-assisted knowledge tools for Obsidian.",
+  "description": "Markdown 기반 오늘 대시보드, 업무 진행도, 통합 타임라인을 하나로 연결합니다.",
   "author": "kbssbk",
   "isDesktopOnly": false
 }
