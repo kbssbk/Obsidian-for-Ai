@@ -12,12 +12,12 @@ const SOURCE_LABELS:Record<TimelineSource,string>={block:'일정',task:'업무',
 const SOURCE_GROUPS:Array<{label:string;sources:TimelineSource[]}>= [{label:'일정',sources:['block']},{label:'업무',sources:['task']},{label:'목표',sources:['goal']},{label:'관계',sources:['person','appointment']},{label:'재정',sources:['money']},{label:'집중·시간',sources:['time']}];
 
 export class TimelineView extends ItemView {
-  private activeSources=new Set<TimelineSource>(['block','task','goal','person','appointment','money','time']);private personId='';private showDone=true;
+  private activeSources=new Set<TimelineSource>(['block','task','goal','person','appointment','money','time']);private personId='';private showDone=true;private initialized=false;
   constructor(leaf:WorkspaceLeaf,private readonly repository:VaultRepository,private readonly settings:()=>LifeOsSettings){super(leaf);}
   getViewType():string{return TIMELINE_VIEW_TYPE;}
   getDisplayText():string{return '라이프 OS 타임라인';}
   getIcon():string{return 'git-branch';}
-  async onOpen():Promise<void>{await this.render();}
+  async onOpen():Promise<void>{if(!this.initialized){this.showDone=this.settings().timelineShowDone;this.initialized=true;}await this.render();}
 
   async render():Promise<void>{
     const root=this.contentEl;root.empty();root.addClass('life-os-view','life-os-timeline-view');root.createEl('h1',{text:'타임라인'});root.createEl('p',{text:'일정·업무·목표·관계·재정·집중 기록 중 원하는 것만 골라 하나의 시간 흐름으로 봅니다.'});
