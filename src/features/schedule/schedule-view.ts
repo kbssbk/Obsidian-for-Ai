@@ -11,7 +11,7 @@ export class ScheduleView extends ItemView {
   private weekOffset=0;
   constructor(leaf:WorkspaceLeaf,private readonly repository:VaultRepository){super(leaf);}
   getViewType():string{return SCHEDULE_VIEW_TYPE;}
-  getDisplayText():string{return 'Life OS 주간 일정';}
+  getDisplayText():string{return '라이프 OS 주간 일정';}
   getIcon():string{return 'calendar-days';}
   async onOpen():Promise<void>{await this.render();}
 
