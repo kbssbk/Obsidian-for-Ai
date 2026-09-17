@@ -1,9 +1,9 @@
 {
   "id": "obsidian-for-ai",
   "name": "라이프 OS",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "minAppVersion": "1.5.0",
-  "description": "마크다운 기반 오늘 대시보드, 일정, 업무, 집중 타이머, 목표, 습관, 사람, 돈, 시간 기록과 회고를 하나로 연결하는 한국어 생활 관리 플러그인입니다.",
+  "description": "마크다운 기반 오늘·업무·집중·관계·약속·타임라인·달력·목표·재정을 연결하는 반응형 한국어 생활 관리 플러그인입니다.",
   "author": "kbssbk",
   "isDesktopOnly": false
 }
