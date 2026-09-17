@@ -12,13 +12,13 @@ export class VaultRepository {
   constructor(private readonly app:App) {}
 
   async snapshot():Promise<LifeOsSnapshot> {
-    const snapshot:LifeOsSnapshot = { blocks:[], tasks:[], projects:[], goals:[], milestones:[], goalActions:[], habits:[], people:[], moneyEntries:[], budgets:[], recurringPayments:[], savingsGoals:[] };
+    const snapshot:LifeOsSnapshot = { blocks:[], tasks:[], projects:[], goals:[], milestones:[], goalActions:[], habits:[], people:[], moneyEntries:[], budgets:[], recurringPayments:[], savingsGoals:[], timeLogs:[] };
     for (const file of this.app.vault.getMarkdownFiles()) this.collectFile(file,snapshot);
     return snapshot;
   }
 
   async createLifeNote(kind:string, title:string, fields:Record<string,string|number|boolean>):Promise<string> {
-    const folderMap:Record<string,string> = { task:'Inbox', block:'Schedule', goal:'Goals', milestone:'Goals', goal_action:'Goals', habit:'Habits', person:'People', money:'Money', budget:'Money', recurring_payment:'Money', savings_goal:'Money' };
+    const folderMap:Record<string,string> = { task:'Inbox', block:'Schedule', goal:'Goals', milestone:'Goals', goal_action:'Goals', habit:'Habits', person:'People', money:'Money', budget:'Money', recurring_payment:'Money', savings_goal:'Money', time_log:'Time Logs' };
     const folder = normalizePath(`Life OS/${folderMap[kind] ?? 'Inbox'}`);
     if (!this.app.vault.getAbstractFileByPath(folder)) { try { await this.app.vault.createFolder(folder); } catch { /* created concurrently */ } }
     const stamp = new Date().toISOString().replace(/[:.]/g,'-');
@@ -37,11 +37,7 @@ export class VaultRepository {
   async setProjectProgress(path:string,progress:number):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.progress_mode='manual'; fm.progress=Math.max(0,Math.min(100,Math.round(progress))); }); }
   async setTaskDone(path:string,done:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.status=done?'done':'todo'; }); }
   async setTaskStage(path:string,stage:'research'|'draft'|'final',done:boolean):Promise<void> {
-    await this.updateFrontmatter(path,(fm)=>{
-      if(stage==='research')fm.research_done=done;
-      if(stage==='draft')fm.draft_done=done;
-      if(stage==='final')fm.status=done?'done':'todo';
-    });
+    await this.updateFrontmatter(path,(fm)=>{ if(stage==='research')fm.research_done=done; if(stage==='draft')fm.draft_done=done; if(stage==='final')fm.status=done?'done':'todo'; });
   }
   async setHabitCheckin(path:string,date:string,checked:boolean):Promise<void> {
     await this.updateFrontmatter(path,(fm)=>{ const existing=Array.isArray(fm.checkins)?fm.checkins.filter((item):item is string=>typeof item==='string'):[]; const next=new Set(existing); if(checked)next.add(date);else next.delete(date); fm.checkins=[...next].sort(); });
@@ -76,5 +72,6 @@ export class VaultRepository {
     if(entity.kind==='budget')snapshot.budgets?.push(entity.value);
     if(entity.kind==='recurring')snapshot.recurringPayments?.push(entity.value);
     if(entity.kind==='savings')snapshot.savingsGoals?.push(entity.value);
+    if(entity.kind==='timeLog')snapshot.timeLogs?.push(entity.value);
   }
 }
