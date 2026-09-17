@@ -14,12 +14,12 @@ function shiftMonth(value:string,delta:number):string{const date=new Date(`${val
 function shiftDays(value:string,delta:number):string{const date=new Date(`${value}T12:00:00Z`);date.setUTCDate(date.getUTCDate()+delta);return date.toISOString().slice(0,10);}
 
 export class CalendarView extends ItemView {
-  private mode:CalendarMode='month';private anchor=todayIso();private selectedDate=todayIso();private activeSources=new Set<TimelineSource>(['block','task','goal','person','appointment','money','time']);private personId='';private showDone=true;
+  private mode:CalendarMode='month';private anchor=todayIso();private selectedDate=todayIso();private activeSources=new Set<TimelineSource>(['block','task','goal','person','appointment','money','time']);private personId='';private showDone=true;private initialized=false;
   constructor(leaf:WorkspaceLeaf,private readonly repository:VaultRepository,private readonly settings:()=>LifeOsSettings){super(leaf);}
   getViewType():string{return CALENDAR_VIEW_TYPE;}
   getDisplayText():string{return '라이프 OS 달력';}
   getIcon():string{return 'calendar-days';}
-  async onOpen():Promise<void>{await this.render();}
+  async onOpen():Promise<void>{if(!this.initialized){this.mode=this.settings().calendarDefaultMode;this.showDone=this.settings().timelineShowDone;this.initialized=true;}await this.render();}
 
   async render():Promise<void>{
     const root=this.contentEl;root.empty();root.addClass('life-os-view','life-os-calendar');root.createEl('h1',{text:'달력'});root.createEl('p',{text:'타임라인과 같은 원본 데이터를 월간·주간·목록으로 바꿔 봅니다. 필터를 켜고 끄면 보고 싶은 기록만 남습니다.'});
