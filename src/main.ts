@@ -11,7 +11,7 @@ export default class LifeOsPlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.loadSettings();
-    this.repository = new VaultRepository(this.app.vault, this.app.metadataCache);
+    this.repository = new VaultRepository(this.app);
 
     this.registerView(DASHBOARD_VIEW_TYPE, (leaf) => new DashboardView(leaf, this.repository, () => this.settings));
     this.registerView(PROJECTS_VIEW_TYPE, (leaf) => new ProjectsView(leaf, this.repository, () => this.settings));
