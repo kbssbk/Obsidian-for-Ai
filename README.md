@@ -1,171 +1,85 @@
-# Life OS for Obsidian
+# 라이프 OS for Obsidian
 
-일정·업무·프로젝트·목표·습관·사람·돈·시간 사용 기록을 각각 따로 관리하지 않고, 하나의 Obsidian 플러그인 안에서 연결해 보는 통합 버전입니다.
+일정·업무·프로젝트·목표·습관·집중 시간·사람·돈·회고를 하나의 Obsidian 플러그인 안에서 연결하는 한국어 생활 관리 플러그인입니다.
 
-핵심 원칙은 **기능은 분리하고 데이터는 통합한다**입니다. 각 Markdown 노트의 YAML frontmatter가 원본이며, Dashboard·Timeline·Planner·Review·Analytics는 같은 데이터를 읽어 파생해서 보여줍니다.
+핵심 원칙은 **기능은 분리하고 데이터는 통합한다**입니다. Markdown 노트의 YAML frontmatter가 원본이며, 오늘·타임라인·계획·회고·분석 화면은 같은 데이터를 읽어 파생해서 보여줍니다.
 
 ## 주요 화면과 명령
 
-- `Life OS: 빠른 추가` — 업무/일정/목표/사람/돈/시간 사용 기록
-- `Life OS: 오늘 열기` — Focus Action, 오늘 업무, 프로젝트, 생활 신호
-- `Life OS: 주간 일정 열기` — 7일 일정과 성장 시간
-- `Life OS: 프로젝트 진행도 열기` — 프로젝트별 수동/자동 진행률
-- `Life OS: 마감 업무 열기` — 기한 그룹과 자료 조사/초안/최종 체크포인트
-- `Life OS: 타임라인 열기` — 일정·업무·목표·사람·돈 통합 흐름
-- `Life OS: 계획·습관·회고 열기` — 오늘/내일, 버퍼, 빈 슬롯, 충돌, 복구, 습관, Analytics
-- `Life OS: 생활 영역 열기` — 목표/마일스톤/사람/예산/정기 결제/저축 목표
-- `Life OS: 생각 정리 노트 만들기` — 문제/이유/해결책/다음 행동 템플릿
+- `라이프 OS: 빠른 추가` — 업무, 일정, 목표, 습관, 사람, 돈, 시간 사용 기록 추가
+- `라이프 OS: 오늘 열기` — 지금 할 한 가지, 오늘 업무, 프로젝트, 생활 신호
+- `라이프 OS: 집중 타이머 열기` — 업무 연결 포모도로/자유 집중, 종료 시 자동 시간 기록
+- `라이프 OS: 주간 일정 열기` — 7일 일정과 성장 시간
+- `라이프 OS: 프로젝트 진행도 열기` — 프로젝트별 수동/자동 진행률
+- `라이프 OS: 마감 업무 열기` — 기한 그룹과 자료 조사/초안/최종 체크포인트
+- `라이프 OS: 타임라인 열기` — 일정·업무·목표·사람·돈 통합 흐름
+- `라이프 OS: 계획·습관·회고 열기` — 오늘/내일, 여유 시간, 빈 시간, 일정 충돌, 복구, 습관, 분석
+- `라이프 OS: 생활 영역 열기` — 목표/마일스톤/사람/예산/정기 결제/저축 목표
+- `라이프 OS: 생각 정리 노트 만들기` — 문제/이유/해결책/다음 행동 템플릿
+- `라이프 OS: 오늘 알림 확인` — 오늘 마감, 기한 지난 업무, 연락 예정 요약
 
-## 기본 frontmatter 유형
+## 집중 타이머
 
-프로젝트:
+집중 타이머에서 열린 업무를 선택한 뒤 기본 집중 시간 또는 자유 집중을 시작합니다. 진행 중인 세션은 플러그인 설정 데이터에 저장되므로 Obsidian을 다시 열어도 이어서 확인할 수 있습니다. `집중 종료 및 기록`을 누르면 `Life OS/Time Logs`에 시간 기록이 자동 생성되고 원래 업무 ID와 연결됩니다.
 
-```yaml
----
-lifeos_type: project
-lifeos_id: project-life-os
-title: Life OS 통합
-status: active
-progress_mode: manual
-progress: 60
-start: 2026-09-18
-due: 2026-10-01
----
-```
+기본 집중 시간과 휴식 시간은 설정에서 변경할 수 있습니다.
 
-업무:
+## 반복 업무
+
+빠른 추가에서 업무를 만들 때 `반복 없음 / 매일 / 매주 / 매월`을 선택할 수 있습니다. 반복 업무를 완료하면 `last_completed`가 기록되고 마감일이 다음 주기로 이동하며 자료 조사/초안 상태가 초기화됩니다.
 
 ```yaml
 ---
 lifeos_type: task
-lifeos_id: task-mobile
-project: project-life-os
-title: 모바일 대응
+lifeos_id: task-exercise
+title: 운동
 status: todo
-due: 2026-09-25
-priority: 5
-estimated_minutes: 60
-research_done: true
+due: 2026-09-18
+priority: 4
+estimated_minutes: 30
+recurrence: daily
+research_done: false
 draft_done: false
 ---
 ```
 
-일정:
+## 시간 기록
 
-```yaml
----
-lifeos_type: block
-title: 집중 작업
-date: 2026-09-18
-start_time: "09:00"
-end_time: "10:30"
-status: todo
-growth: true
----
-```
-
-목표/마일스톤/다음 행동:
-
-```yaml
----
-lifeos_type: goal
-title: 영어 실력 향상
-target_date: 2026-12-31
-status: active
-progress: 30
----
-```
-
-```yaml
----
-lifeos_type: milestone
-goal: goal-english
-title: 교재 1권 완료
-due: 2026-10-31
-done: false
-position: 1
----
-```
-
-```yaml
----
-lifeos_type: goal_action
-goal: goal-english
-title: 단어 20개 복습
-estimated_minutes: 15
-done: false
----
-```
-
-습관:
-
-```yaml
----
-lifeos_type: habit
-title: 운동
-frequency: daily
-checkins:
-  - 2026-09-16
-  - 2026-09-17
-  - 2026-09-18
----
-```
-
-사람:
-
-```yaml
----
-lifeos_type: person
-title: 민수
-relationship: 친구
-organization: 회사
-phone: "010-0000-0000"
-next_contact: 2026-09-20
-favorite: true
----
-```
-
-돈:
-
-```yaml
----
-lifeos_type: money
-title: 장보기
-kind: expense
-amount: 50000
-category: 생활
-date: 2026-09-18
----
-```
-
-예산/정기 결제/저축 목표는 각각 `budget`, `recurring_payment`, `savings_goal` 유형을 사용합니다.
-
-시간 사용 기록:
+수동 시간 기록과 집중 타이머가 만든 기록은 같은 `time_log` 유형을 사용합니다.
 
 ```yaml
 ---
 lifeos_type: time_log
-title: 플러그인 개발
+title: 보고서 작성
 date: 2026-09-18
 start_time: "09:00"
-end_time: "10:30"
+end_time: "09:25"
 category: 집중
+task: task-report
 ---
 ```
 
+## 데이터 유형
+
+현재 프로젝트, 업무, 일정, 목표, 마일스톤, 목표 행동, 습관, 사람, 수입·지출, 월 예산, 정기 결제, 저축 목표, 시간 사용 기록을 지원합니다. 기존 Markdown 노트를 강제로 이동하거나 일괄 변환하지 않으며 `lifeos_type`이 있는 노트만 라이프 OS 데이터로 읽습니다.
+
 ## 시간 관리 원칙과 근거
 
-Planner/Review/Analytics에는 워치타워 온라인 라이브러리의 「시간을 절약하는 20가지 방법」에 나오는 20개 제안을 모두 제품 원칙으로 매핑했습니다. 우선순위, 단일 일정 원본, 실행 계획, 현실적인 목표, 과부하 제한, 시간 사용 일지, 집중 시간, 에너지 피크, 버퍼, 자투리 시간, 80/20, 오늘/내일 분리, 재충전, 생각 정리, 완벽주의 방지, 즉시 시작, 유연한 조정 등을 기능으로 반영합니다.
+계획·회고 설계에는 워치타워 온라인 라이브러리의 「시간을 절약하는 20가지 방법」에서 제안하는 우선순위, 과도한 계획 방지, 시간 사용 기록, 집중 시간, 여유 시간, 자투리 시간, 재충전, 생각 정리, 유연한 재계획 등의 원칙을 반영합니다.
 
 공식 원문: https://wol.jw.org/ko/wol/d/r8/lp-ko/102010124
 
-세부 매핑: `docs/references/time-saving-20.md`
+## 설치
 
-기존 저장소에서 흡수한 코드/UX 패턴의 원본 링크: `docs/references/absorbed-sources.md`
+GitHub Actions의 `라이프-OS-옵시디언-플러그인` 산출물에는 다음 세 파일이 들어 있습니다.
 
-## 데이터 안전성
+```text
+main.js
+manifest.json
+styles.css
+```
 
-기존 Markdown 노트를 강제로 이동하거나 일괄 변환하지 않습니다. `lifeos_type`이 있는 노트만 Life OS 데이터로 읽습니다. Dashboard와 Timeline은 별도 복제 데이터를 만들지 않습니다. 화면에서 체크/진행률/복구 등을 직접 조작할 때만 해당 노트의 관련 frontmatter를 수정합니다.
+세 파일을 Vault의 `.obsidian/plugins/obsidian-for-ai/` 폴더에 넣은 뒤 Obsidian 커뮤니티 플러그인 설정에서 `라이프 OS`를 활성화합니다. Android에서도 Node/Electron 전용 API 없이 Obsidian API를 사용하도록 구성되어 있습니다.
 
 ## 개발/검증
 

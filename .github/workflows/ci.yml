@@ -1,10 +1,10 @@
-name: Life OS CI
+name: 라이프 OS CI
 
 on:
   pull_request:
   push:
     branches:
-      - feat/life-os-integrated
+      - main
 
 jobs:
   verify:
@@ -19,3 +19,12 @@ jobs:
       - run: npm install
       - run: npm test
       - run: npm run build
+      - name: 설치용 플러그인 파일 모으기
+        run: |
+          mkdir -p dist/obsidian-for-ai
+          cp main.js manifest.json styles.css dist/obsidian-for-ai/
+      - name: 설치용 빌드 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: 라이프-OS-옵시디언-플러그인
+          path: dist/obsidian-for-ai
