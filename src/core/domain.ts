@@ -3,6 +3,7 @@ export type ProjectStatus = 'active' | 'paused' | 'done';
 export type ProgressMode = 'manual' | 'auto';
 export type TimelineStatus = 'planned' | 'done' | 'attention';
 export type TimelineSource = 'block' | 'task' | 'goal';
+export type HabitFrequency = 'daily' | 'weekly';
 
 export type LifeOsBlock = {
   id: string;
@@ -21,6 +22,8 @@ export type LifeOsTask = {
   status: LifeOsStatus;
   researchDone: boolean;
   draftDone: boolean;
+  priority?: number;
+  estimatedMinutes?: number;
   path?: string;
 };
 
@@ -44,11 +47,20 @@ export type GoalAction = {
   path?: string;
 };
 
+export type LifeOsHabit = {
+  id: string;
+  title: string;
+  frequency: HabitFrequency;
+  checkins: string[];
+  path?: string;
+};
+
 export type LifeOsSnapshot = {
   blocks: LifeOsBlock[];
   tasks: LifeOsTask[];
   projects: LifeOsProject[];
   goalActions: GoalAction[];
+  habits: LifeOsHabit[];
 };
 
 export type TimelineEvent = {
