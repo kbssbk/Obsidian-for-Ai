@@ -1,16 +1,17 @@
 {
   "name": "obsidian-for-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node esbuild.config.mjs production",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "esbuild": "^0.25.0",
     "obsidian": "latest",
+    "tsx": "^4.20.0",
     "typescript": "^5.7.0"
   }
 }
