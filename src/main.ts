@@ -18,7 +18,7 @@ export default class LifeOsPlugin extends Plugin {
     this.registerView(DASHBOARD_VIEW_TYPE,(leaf)=>new DashboardView(leaf,this.repository,()=>this.settings));
     this.registerView(PROJECTS_VIEW_TYPE,(leaf)=>new ProjectsView(leaf,this.repository,()=>this.settings));
     this.registerView(TIMELINE_VIEW_TYPE,(leaf)=>new TimelineView(leaf,this.repository,()=>this.settings));
-    this.registerView(PLANNER_VIEW_TYPE,(leaf)=>new PlannerView(leaf,this.repository));
+    this.registerView(PLANNER_VIEW_TYPE,(leaf)=>new PlannerView(leaf,this.repository,()=>this.settings));
     this.registerView(AREAS_VIEW_TYPE,(leaf)=>new AreasView(leaf,this.repository));
     this.registerView(SCHEDULE_VIEW_TYPE,(leaf)=>new ScheduleView(leaf,this.repository));
 
@@ -38,7 +38,6 @@ export default class LifeOsPlugin extends Plugin {
   onunload():void{for(const type of [DASHBOARD_VIEW_TYPE,SCHEDULE_VIEW_TYPE,PROJECTS_VIEW_TYPE,TIMELINE_VIEW_TYPE,PLANNER_VIEW_TYPE,AREAS_VIEW_TYPE])this.app.workspace.detachLeavesOfType(type);}
   async loadSettings():Promise<void>{this.settings=Object.assign({},DEFAULT_SETTINGS,await this.loadData() as Partial<LifeOsSettings>|null);}
   async saveSettings():Promise<void>{await this.saveData(this.settings);await this.refreshOpenViews();}
-
   private async openView(type:string):Promise<void>{const existing=this.app.workspace.getLeavesOfType(type)[0];const leaf=existing??this.app.workspace.getLeaf(true);await leaf.setViewState({type,active:true});this.app.workspace.revealLeaf(leaf);}
   private async refreshOpenViews():Promise<void>{
     for(const leaf of this.app.workspace.getLeavesOfType(DASHBOARD_VIEW_TYPE))if(leaf.view instanceof DashboardView)await leaf.view.render();
