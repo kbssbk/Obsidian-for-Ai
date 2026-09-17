@@ -18,7 +18,7 @@ export class VaultRepository {
   }
 
   async createLifeNote(kind:string, title:string, fields:Record<string,string|number|boolean>):Promise<string> {
-    const folderMap:Record<string,string> = { task:'Inbox', block:'Schedule', goal:'Goals', milestone:'Goals', goal_action:'Goals', habit:'Habits', person:'People', money:'Money', budget:'Money', recurring_payment:'Money', savings_goal:'Money', time_log:'Time Logs' };
+    const folderMap:Record<string,string> = { task:'Inbox', block:'Schedule', goal:'Goals', milestone:'Goals', goal_action:'Goals', habit:'Habits', person:'People', money:'Money', budget:'Money', recurring_payment:'Money', savings_goal:'Money', time_log:'Time Logs', reflection:'Review' };
     const folder = normalizePath(`Life OS/${folderMap[kind] ?? 'Inbox'}`);
     if (!this.app.vault.getAbstractFileByPath(folder)) { try { await this.app.vault.createFolder(folder); } catch { /* created concurrently */ } }
     const stamp = new Date().toISOString().replace(/[:.]/g,'-');
@@ -34,14 +34,19 @@ export class VaultRepository {
     return this.createLifeNote('task',title,{ status:'todo', due, priority:Math.max(1,Math.min(5,Math.round(priority))), estimated_minutes:Math.max(5,Math.round(estimatedMinutes)), research_done:false, draft_done:false });
   }
 
+  async createReflectionNote(title:string,date:string):Promise<string>{
+    const path=await this.createLifeNote('reflection',title,{date});
+    const file=this.app.vault.getAbstractFileByPath(path);
+    if(file instanceof TFile){
+      await this.app.vault.append(file,'## 문제 또는 생각\n\n\n## 왜 신경 쓰이는가\n\n\n## 가능한 해결책\n\n- \n- \n- \n\n## 다음 행동\n\n- [ ] \n');
+    }
+    return path;
+  }
+
   async setProjectProgress(path:string,progress:number):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.progress_mode='manual'; fm.progress=Math.max(0,Math.min(100,Math.round(progress))); }); }
   async setTaskDone(path:string,done:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.status=done?'done':'todo'; }); }
-  async setTaskStage(path:string,stage:'research'|'draft'|'final',done:boolean):Promise<void> {
-    await this.updateFrontmatter(path,(fm)=>{ if(stage==='research')fm.research_done=done; if(stage==='draft')fm.draft_done=done; if(stage==='final')fm.status=done?'done':'todo'; });
-  }
-  async setHabitCheckin(path:string,date:string,checked:boolean):Promise<void> {
-    await this.updateFrontmatter(path,(fm)=>{ const existing=Array.isArray(fm.checkins)?fm.checkins.filter((item):item is string=>typeof item==='string'):[]; const next=new Set(existing); if(checked)next.add(date);else next.delete(date); fm.checkins=[...next].sort(); });
-  }
+  async setTaskStage(path:string,stage:'research'|'draft'|'final',done:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ if(stage==='research')fm.research_done=done; if(stage==='draft')fm.draft_done=done; if(stage==='final')fm.status=done?'done':'todo'; }); }
+  async setHabitCheckin(path:string,date:string,checked:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ const existing=Array.isArray(fm.checkins)?fm.checkins.filter((item):item is string=>typeof item==='string'):[]; const next=new Set(existing); if(checked)next.add(date);else next.delete(date); fm.checkins=[...next].sort(); }); }
   async setPersonFavorite(path:string,favorite:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.favorite=favorite; }); }
   async markPersonContacted(path:string,date:string,nextContactDate=''):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.last_contact=date; if(nextContactDate)fm.next_contact=nextContactDate; }); }
   async setMilestoneDone(path:string,done:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.done=done; }); }
