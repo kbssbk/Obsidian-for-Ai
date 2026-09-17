@@ -56,6 +56,7 @@ export class PlannerView extends ItemView {
 
     const tomorrowCard = root.createDiv({ cls:'life-os-card' });
     tomorrowCard.createEl('h2', { text:'내일 이후' });
+    if (!plan.tomorrow.length) tomorrowCard.createEl('p', { text:'뒤로 미뤄 둔 열린 업무가 없습니다.' });
     for (const task of plan.tomorrow) tomorrowCard.createEl('p', { text:`• ${task.title} · ${task.due || '기한 미정'}` });
 
     const habitCard = root.createDiv({ cls:'life-os-card' });
@@ -63,7 +64,8 @@ export class PlannerView extends ItemView {
     if (!(snapshot.habits ?? []).length) habitCard.createEl('p', { text:'lifeos_type: habit 노트를 추가하면 여기에 표시됩니다.' });
     for (const habit of snapshot.habits ?? []) {
       const row = habitCard.createDiv({ cls:'life-os-row' });
-      const checkbox = row.createEl('input', { type:'checkbox' });
+      const checkbox = row.createEl('input');
+      checkbox.type = 'checkbox';
       checkbox.checked = habit.checkins.includes(today);
       row.createEl('span', { text:habit.title });
       checkbox.addEventListener('change', async () => {
@@ -83,8 +85,9 @@ export class PlannerView extends ItemView {
     const source = root.createDiv({ cls:'life-os-card' });
     source.createEl('h2', { text:'채택한 시간 관리 원칙' });
     source.createEl('p', { text:'우선순위, 오늘/내일 분리, 과도한 계획 방지, 버퍼, 집중 시간, 80/20, 재충전, 유연한 재계획 원칙을 반영합니다.' });
-    const link = source.createEl('a', { text:'참조: 「시간을 절약하는 20가지 방법」', href:TIME_SAVING_SOURCE_URL });
-    link.setAttr('target', '_blank');
-    link.setAttr('rel', 'noopener noreferrer');
+    const link = source.createEl('a', { text:'참조: 「시간을 절약하는 20가지 방법」' });
+    link.href = TIME_SAVING_SOURCE_URL;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
   }
 }
