@@ -36,6 +36,11 @@
 .life-os-timeline-event.is-done { opacity: .65; }
 .life-os-empty { margin-top: 16px; padding: 18px; border-radius: 10px; background: var(--background-secondary); color: var(--text-muted); }
 .life-os-focus { cursor: pointer; }
+.life-os-focus-timer { text-align: center; }
+.life-os-focus-timer .life-os-actions { justify-content: center; }
+.life-os-timer-clock { margin: 18px 0 10px; font-size: clamp(42px, 9vw, 88px); line-height: 1; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: .03em; }
+.life-os-focus-timer small { display: block; margin-top: 12px; color: var(--text-muted); }
+.life-os-card select { width: 100%; min-height: 38px; margin: 8px 0 12px; padding: 6px 8px; border: 1px solid var(--background-modifier-border); border-radius: 8px; background: var(--background-primary); color: var(--text-normal); }
 .life-os-signal-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
 .life-os-signal { padding: 12px; border: 1px solid var(--background-modifier-border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px; }
 .life-os-signal span { color: var(--text-muted); font-size: var(--font-ui-small); }
