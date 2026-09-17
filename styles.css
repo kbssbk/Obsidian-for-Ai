@@ -21,6 +21,12 @@
 .life-os-task-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
 .life-os-check { width: 34px; padding: 0; }
 .life-os-task-list span { cursor: pointer; }
+.life-os-task-card { padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); }
+.life-os-task-card:last-child { border-bottom: 0; }
+.life-os-task-card.urgency-overdue { border-left: 3px solid var(--text-error); padding-left: 10px; }
+.life-os-task-card.urgency-today { border-left: 3px solid var(--interactive-accent); padding-left: 10px; }
+.life-os-checkpoints { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 10px; }
+.life-os-stage { display: flex; align-items: center; gap: 6px; padding: 8px; border-radius: 8px; background: var(--background-secondary); }
 .life-os-timeline { position: relative; margin-top: 18px; }
 .life-os-timeline-event { display: grid; grid-template-columns: 110px 1fr auto; padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
 .life-os-timeline-date { color: var(--text-muted); font-size: var(--font-ui-small); }
@@ -49,6 +55,7 @@
 @media (max-width: 800px) {
   .life-os-week-grid { grid-template-columns: 1fr; }
   .life-os-signal-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .life-os-checkpoints { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
