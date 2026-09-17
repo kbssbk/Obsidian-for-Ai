@@ -22,7 +22,7 @@ test('manual progress uses stored value and auto progress averages task stage co
 });
 
 test('dashboard returns active projects and due open tasks', () => {
-  const dashboard = buildDashboard(snapshot, '2026-09-18');
+  const dashboard = buildDashboard(snapshot, '2026-09-19');
   assert.equal(dashboard.projects.length, 2);
   assert.deepEqual(dashboard.tasks.map(task => task.id), ['b']);
 });
