@@ -36,6 +36,13 @@ export class VaultRepository {
 
   async setProjectProgress(path:string,progress:number):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.progress_mode='manual'; fm.progress=Math.max(0,Math.min(100,Math.round(progress))); }); }
   async setTaskDone(path:string,done:boolean):Promise<void> { await this.updateFrontmatter(path,(fm)=>{ fm.status=done?'done':'todo'; }); }
+  async setTaskStage(path:string,stage:'research'|'draft'|'final',done:boolean):Promise<void> {
+    await this.updateFrontmatter(path,(fm)=>{
+      if(stage==='research')fm.research_done=done;
+      if(stage==='draft')fm.draft_done=done;
+      if(stage==='final')fm.status=done?'done':'todo';
+    });
+  }
   async setHabitCheckin(path:string,date:string,checked:boolean):Promise<void> {
     await this.updateFrontmatter(path,(fm)=>{ const existing=Array.isArray(fm.checkins)?fm.checkins.filter((item):item is string=>typeof item==='string'):[]; const next=new Set(existing); if(checked)next.add(date);else next.delete(date); fm.checkins=[...next].sort(); });
   }
