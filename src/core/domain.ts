@@ -60,7 +60,7 @@ export type LifeOsSnapshot = {
   tasks: LifeOsTask[];
   projects: LifeOsProject[];
   goalActions: GoalAction[];
-  habits: LifeOsHabit[];
+  habits?: LifeOsHabit[];
 };
 
 export type TimelineEvent = {
