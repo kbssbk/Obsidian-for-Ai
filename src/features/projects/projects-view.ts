@@ -11,7 +11,7 @@ export class ProjectsView extends ItemView {
   }
 
   getViewType(): string { return PROJECTS_VIEW_TYPE; }
-  getDisplayText(): string { return 'Life OS 업무'; }
+  getDisplayText(): string { return '라이프 OS 프로젝트'; }
   getIcon(): string { return 'list-checks'; }
 
   async onOpen(): Promise<void> {
@@ -22,18 +22,18 @@ export class ProjectsView extends ItemView {
     const root = this.contentEl;
     root.empty();
     root.addClass('life-os-view');
-    root.createEl('h1', { text:'업무 현황' });
+    root.createEl('h1', { text:'프로젝트 진행도' });
     root.createEl('p', { text:'프로젝트별 진행률과 연결된 업무를 한눈에 보고 바로 조정합니다.' });
 
     if (!this.settings().projectsEnabled) {
-      root.createDiv({ cls:'life-os-empty', text:'설정에서 업무 진행도 기능이 꺼져 있습니다.' });
+      root.createDiv({ cls:'life-os-empty', text:'설정에서 프로젝트 진행도 기능이 꺼져 있습니다.' });
       return;
     }
 
     const snapshot = await this.repository.snapshot();
     const projects = snapshot.projects.filter((project) => project.status !== 'done');
     if (!projects.length) {
-      root.createDiv({ cls:'life-os-empty', text:'등록된 프로젝트가 없습니다.' });
+      root.createDiv({ cls:'life-os-empty', text:'진행 중인 프로젝트가 없습니다.' });
       return;
     }
 

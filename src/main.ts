@@ -26,17 +26,17 @@ export default class LifeOsPlugin extends Plugin {
     this.registerView(PLANNER_VIEW_TYPE,(leaf)=>new PlannerView(leaf,this.repository,()=>this.settings));
     this.registerView(AREAS_VIEW_TYPE,(leaf)=>new AreasView(leaf,this.repository));
 
-    this.addRibbonIcon('layout-dashboard','Life OS 열기',()=>void this.openView(DASHBOARD_VIEW_TYPE));
-    this.addRibbonIcon('plus-circle','Life OS 빠른 추가',()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open());
-    this.addCommand({id:'quick-capture-life-os',name:'Life OS: 빠른 추가',callback:()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open()});
-    this.addCommand({id:'create-life-os-reflection',name:'Life OS: 생각 정리 노트 만들기',callback:()=>void this.createReflection()});
-    this.addCommand({id:'open-life-os-dashboard',name:'Life OS: 오늘 열기',callback:()=>void this.openView(DASHBOARD_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-schedule',name:'Life OS: 주간 일정 열기',callback:()=>void this.openView(SCHEDULE_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-projects',name:'Life OS: 프로젝트 진행도 열기',callback:()=>void this.openView(PROJECTS_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-tasks',name:'Life OS: 마감 업무 열기',callback:()=>void this.openView(TASKS_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-timeline',name:'Life OS: 타임라인 열기',callback:()=>void this.openView(TIMELINE_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-planner',name:'Life OS: 계획·습관·회고 열기',callback:()=>void this.openView(PLANNER_VIEW_TYPE)});
-    this.addCommand({id:'open-life-os-areas',name:'Life OS: 생활 영역 열기',callback:()=>void this.openView(AREAS_VIEW_TYPE)});
+    this.addRibbonIcon('layout-dashboard','라이프 OS 열기',()=>void this.openView(DASHBOARD_VIEW_TYPE));
+    this.addRibbonIcon('plus-circle','라이프 OS 빠른 추가',()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open());
+    this.addCommand({id:'quick-capture-life-os',name:'라이프 OS: 빠른 추가',callback:()=>new QuickCaptureModal(this.app,this.repository,()=>void this.refreshOpenViews()).open()});
+    this.addCommand({id:'create-life-os-reflection',name:'라이프 OS: 생각 정리 노트 만들기',callback:()=>void this.createReflection()});
+    this.addCommand({id:'open-life-os-dashboard',name:'라이프 OS: 오늘 열기',callback:()=>void this.openView(DASHBOARD_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-schedule',name:'라이프 OS: 주간 일정 열기',callback:()=>void this.openView(SCHEDULE_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-projects',name:'라이프 OS: 프로젝트 진행도 열기',callback:()=>void this.openView(PROJECTS_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-tasks',name:'라이프 OS: 마감 업무 열기',callback:()=>void this.openView(TASKS_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-timeline',name:'라이프 OS: 타임라인 열기',callback:()=>void this.openView(TIMELINE_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-planner',name:'라이프 OS: 계획·습관·회고 열기',callback:()=>void this.openView(PLANNER_VIEW_TYPE)});
+    this.addCommand({id:'open-life-os-areas',name:'라이프 OS: 생활 영역 열기',callback:()=>void this.openView(AREAS_VIEW_TYPE)});
     this.addSettingTab(new LifeOsSettingTab(this.app,this));
     this.registerEvent(this.app.metadataCache.on('changed',()=>void this.refreshOpenViews()));
   }

@@ -21,7 +21,7 @@ const SOURCE_LABELS: Record<TimelineSource, string> = { block:'일정', task:'�
 export class TimelineView extends ItemView {
   constructor(leaf: WorkspaceLeaf, private readonly repository: VaultRepository, private readonly settings: () => LifeOsSettings) { super(leaf); }
   getViewType(): string { return TIMELINE_VIEW_TYPE; }
-  getDisplayText(): string { return 'Life OS 타임라인'; }
+  getDisplayText(): string { return '라이프 OS 타임라인'; }
   getIcon(): string { return 'calendar-range'; }
   async onOpen(): Promise<void> { await this.render(); }
 
@@ -30,7 +30,7 @@ export class TimelineView extends ItemView {
     root.empty();
     root.addClass('life-os-view');
     root.createEl('h1', { text: '타임라인' });
-    root.createEl('p', { text: '일정·업무·목표·사람·돈을 원본 데이터에서 파생해 하나의 흐름으로 봅니다.' });
+    root.createEl('p', { text: '일정·업무·목표·사람·돈을 원본 기록에서 가져와 하나의 시간 흐름으로 봅니다.' });
 
     if (!this.settings().timelineEnabled) {
       root.createDiv({ cls:'life-os-empty', text:'설정에서 타임라인 기능이 꺼져 있습니다.' });
@@ -44,7 +44,7 @@ export class TimelineView extends ItemView {
     const events = buildTimelineEvents(snapshot, range);
 
     if (!events.length) {
-      root.createDiv({ cls:'life-os-empty', text:'표시할 기록이 없습니다. README의 frontmatter 예시로 시작할 수 있습니다.' });
+      root.createDiv({ cls:'life-os-empty', text:'표시할 기록이 없습니다. 빠른 추가에서 일정이나 업무를 먼저 만들어 보세요.' });
       return;
     }
 

@@ -7,7 +7,7 @@ function todayIso():string { return new Intl.DateTimeFormat('en-CA',{timeZone:'A
 export class AreasView extends ItemView {
   constructor(leaf:WorkspaceLeaf,private readonly repository:VaultRepository){super(leaf);}
   getViewType():string{return AREAS_VIEW_TYPE;}
-  getDisplayText():string{return 'Life OS 생활 영역';}
+  getDisplayText():string{return '라이프 OS 생활 영역';}
   getIcon():string{return 'layout-grid';}
   async onOpen():Promise<void>{await this.render();}
 
@@ -16,9 +16,9 @@ export class AreasView extends ItemView {
     const snapshot=await this.repository.snapshot(); const today=todayIso();
     root.createEl('h1',{text:'생활 영역'}); root.createEl('p',{text:'목표·사람·돈을 흩어진 데이터가 아니라 같은 삶의 흐름으로 관리합니다.'});
 
-    const goals=root.createDiv({cls:'life-os-card'}); goals.createEl('h2',{text:'목표 · Growth Paths'});
+    const goals=root.createDiv({cls:'life-os-card'}); goals.createEl('h2',{text:'목표 · 성장 경로'});
     const activeGoals=(snapshot.goals??[]).filter((goal)=>goal.status!=='done');
-    if(!activeGoals.length)goals.createEl('p',{text:'활성 목표가 없습니다.'});
+    if(!activeGoals.length)goals.createEl('p',{text:'진행 중인 목표가 없습니다.'});
     for(const goal of activeGoals){
       const wrap=goals.createDiv({cls:'life-os-area-block'}); const head=wrap.createDiv({cls:'life-os-row'}); head.createEl('strong',{text:goal.title}); head.createEl('span',{text:`${goal.progress}%${goal.targetDate?` · 목표일 ${goal.targetDate}`:''}`});
       if(goal.path)head.addEventListener('click',()=>void this.app.workspace.openLinkText(goal.path??'','',false));
@@ -31,7 +31,7 @@ export class AreasView extends ItemView {
       const actions=snapshot.goalActions.filter((action)=>action.goalId===goal.id&&!action.done); if(actions.length){wrap.createEl('small',{text:`다음 행동: ${actions[0].title} · ${actions[0].estimatedMinutes}분`});}
     }
 
-    const people=root.createDiv({cls:'life-os-card'}); people.createEl('h2',{text:'사람 · Connections'});
+    const people=root.createDiv({cls:'life-os-card'}); people.createEl('h2',{text:'사람 · 관계 관리'});
     const visiblePeople=(snapshot.people??[]).slice().sort((a,b)=>Number(Boolean(b.favorite))-Number(Boolean(a.favorite))||(a.nextContactDate??'9999').localeCompare(b.nextContactDate??'9999')||a.name.localeCompare(b.name,'ko'));
     if(!visiblePeople.length)people.createEl('p',{text:'등록된 사람이 없습니다.'});
     for(const person of visiblePeople.slice(0,12)){
@@ -39,12 +39,12 @@ export class AreasView extends ItemView {
       const actions=row.createDiv({cls:'life-os-actions'});
       if(person.path){
         const fav=actions.createEl('button',{text:person.favorite?'★':'☆'}); fav.setAttr('aria-label','즐겨찾기'); fav.addEventListener('click',async()=>{await this.repository.setPersonFavorite(person.path??'',!person.favorite);await this.render();});
-        if(person.nextContactDate&&person.nextContactDate<=today){const contacted=actions.createEl('button',{text:'연락 완료'});contacted.addEventListener('click',async()=>{await this.repository.markPersonContacted(person.path??'',today);new Notice(`${person.name} 연락 기록 완료`);await this.render();});}
+        if(person.nextContactDate&&person.nextContactDate<=today){const contacted=actions.createEl('button',{text:'연락 완료'});contacted.addEventListener('click',async()=>{await this.repository.markPersonContacted(person.path??'',today);new Notice(`${person.name} 연락 기록을 완료했습니다.`);await this.render();});}
         const open=actions.createEl('button',{text:'열기'});open.addEventListener('click',()=>void this.app.workspace.openLinkText(person.path??'','',false));
       }
     }
 
-    const money=root.createDiv({cls:'life-os-card'}); money.createEl('h2',{text:'돈 · Money Flow'}); const month=today.slice(0,7);
+    const money=root.createDiv({cls:'life-os-card'}); money.createEl('h2',{text:'돈 · 자금 흐름'}); const month=today.slice(0,7);
     const monthEntries=(snapshot.moneyEntries??[]).filter((entry)=>entry.date.startsWith(month));
     const income=monthEntries.filter((entry)=>entry.kind==='income').reduce((sum,entry)=>sum+entry.amount,0);
     const expense=monthEntries.filter((entry)=>entry.kind==='expense').reduce((sum,entry)=>sum+entry.amount,0);
