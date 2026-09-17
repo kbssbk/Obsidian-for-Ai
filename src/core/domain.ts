@@ -2,8 +2,10 @@ export type LifeOsStatus = 'todo' | 'doing' | 'done';
 export type ProjectStatus = 'active' | 'paused' | 'done';
 export type ProgressMode = 'manual' | 'auto';
 export type TimelineStatus = 'planned' | 'done' | 'attention';
-export type TimelineSource = 'block' | 'task' | 'goal';
+export type TimelineSource = 'block' | 'task' | 'goal' | 'person' | 'money';
 export type HabitFrequency = 'daily' | 'weekly';
+export type GoalStatus = 'active' | 'paused' | 'done';
+export type MoneyKind = 'income' | 'expense';
 
 export type LifeOsBlock = {
   id: string;
@@ -11,6 +13,7 @@ export type LifeOsBlock = {
   date: string;
   startTime: string;
   endTime: string;
+  status?: LifeOsStatus;
   path?: string;
 };
 
@@ -38,6 +41,15 @@ export type LifeOsProject = {
   path?: string;
 };
 
+export type LifeOsGoal = {
+  id: string;
+  title: string;
+  targetDate?: string;
+  status: GoalStatus;
+  progress: number;
+  path?: string;
+};
+
 export type GoalAction = {
   id: string;
   goalId: string;
@@ -55,12 +67,35 @@ export type LifeOsHabit = {
   path?: string;
 };
 
+export type LifeOsPerson = {
+  id: string;
+  name: string;
+  relationship?: string;
+  nextContactDate?: string;
+  lastContactDate?: string;
+  phone?: string;
+  path?: string;
+};
+
+export type LifeOsMoneyEntry = {
+  id: string;
+  title: string;
+  kind: MoneyKind;
+  amount: number;
+  date: string;
+  category?: string;
+  path?: string;
+};
+
 export type LifeOsSnapshot = {
   blocks: LifeOsBlock[];
   tasks: LifeOsTask[];
   projects: LifeOsProject[];
+  goals?: LifeOsGoal[];
   goalActions: GoalAction[];
   habits?: LifeOsHabit[];
+  people?: LifeOsPerson[];
+  moneyEntries?: LifeOsMoneyEntry[];
 };
 
 export type TimelineEvent = {
