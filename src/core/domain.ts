@@ -2,11 +2,12 @@ export type LifeOsStatus = 'todo' | 'doing' | 'done';
 export type ProjectStatus = 'active' | 'paused' | 'done';
 export type ProgressMode = 'manual' | 'auto';
 export type TimelineStatus = 'planned' | 'done' | 'attention';
-export type TimelineSource = 'block' | 'task' | 'goal' | 'person' | 'money';
+export type TimelineSource = 'block' | 'task' | 'goal' | 'person' | 'appointment' | 'money' | 'time';
 export type HabitFrequency = 'daily' | 'weekly';
 export type GoalStatus = 'active' | 'paused' | 'done';
 export type MoneyKind = 'income' | 'expense' | 'savings';
 export type TaskRecurrence = 'none' | 'daily' | 'weekly' | 'monthly';
+export type AppointmentStatus = 'planned' | 'done' | 'cancelled';
 
 export type LifeOsBlock = { id:string; title:string; date:string; startTime:string; endTime:string; status?:LifeOsStatus; growth?:boolean; path?:string };
 export type LifeOsTask = { id:string; title:string; projectId:string; due:string; status:LifeOsStatus; researchDone:boolean; draftDone:boolean; priority?:number; estimatedMinutes?:number; recurrence?:TaskRecurrence; lastCompleted?:string; path?:string };
@@ -16,6 +17,7 @@ export type LifeOsMilestone = { id:string; goalId:string; title:string; dueDate:
 export type GoalAction = { id:string; goalId:string; title:string; estimatedMinutes:number; done:boolean; path?:string };
 export type LifeOsHabit = { id:string; title:string; frequency:HabitFrequency; checkins:string[]; path?:string };
 export type LifeOsPerson = { id:string; name:string; nickname?:string; relationship?:string; organization?:string; phone?:string; email?:string; birthday?:string; lastContactDate?:string; nextContactDate?:string; contactCadence?:string; interests?:string; giftIdeas?:string; favorite?:boolean; path?:string };
+export type LifeOsAppointment = { id:string; title:string; date:string; startTime:string; endTime:string; location?:string; purpose?:string; personIds:string[]; note?:string; nextAction?:string; status:AppointmentStatus; path?:string };
 export type LifeOsMoneyEntry = { id:string; title:string; kind:MoneyKind; amount:number; date:string; category?:string; note?:string; path?:string };
 export type LifeOsBudget = { id:string; month:string; category:string; limitAmount:number; path?:string };
 export type LifeOsRecurringPayment = { id:string; title:string; amount:number; nextDueDate:string; active:boolean; path?:string };
@@ -31,6 +33,7 @@ export type LifeOsSnapshot = {
   goalActions:GoalAction[];
   habits?:LifeOsHabit[];
   people?:LifeOsPerson[];
+  appointments?:LifeOsAppointment[];
   moneyEntries?:LifeOsMoneyEntry[];
   budgets?:LifeOsBudget[];
   recurringPayments?:LifeOsRecurringPayment[];
@@ -38,5 +41,5 @@ export type LifeOsSnapshot = {
   timeLogs?:LifeOsTimeLog[];
 };
 
-export type TimelineEvent = { id:string; source:TimelineSource; date:string; title:string; status:TimelineStatus; detail:string; path?:string };
+export type TimelineEvent = { id:string; source:TimelineSource; date:string; title:string; status:TimelineStatus; detail:string; path?:string; personIds?:string[] };
 export type DateRange = { from:string; to:string };
