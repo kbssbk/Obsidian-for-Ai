@@ -4,93 +4,25 @@
   padding: 20px;
 }
 
-.life-os-view > p {
-  color: var(--text-muted);
-  margin-top: -8px;
-}
-
-.life-os-section,
-.life-os-card {
-  margin-top: 18px;
-  padding: 16px;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 12px;
-  background: var(--background-primary-alt);
-}
-
-.life-os-row,
-.life-os-card-header,
-.life-os-timeline-event {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.life-os-row {
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--background-modifier-border);
-  cursor: pointer;
-}
-
+.life-os-view > p { color: var(--text-muted); margin-top: -8px; }
+.life-os-section, .life-os-card { margin-top: 18px; padding: 16px; border: 1px solid var(--background-modifier-border); border-radius: 12px; background: var(--background-primary-alt); }
+.life-os-row, .life-os-card-header, .life-os-timeline-event, .life-os-progress-row { display: flex; align-items: center; gap: 12px; }
+.life-os-row { justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
 .life-os-row:last-child { border-bottom: 0; }
-
-.life-os-card-header {
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.life-os-chip {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--background-modifier-hover);
-  color: var(--text-muted);
-  font-size: var(--font-ui-smaller);
-}
-
-.life-os-progress-label {
-  margin-top: 10px;
-  font-weight: 700;
-}
-
-.life-os-progress-track {
-  height: 8px;
-  margin-top: 6px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--background-modifier-border);
-}
-
-.life-os-progress-bar {
-  height: 100%;
-  border-radius: inherit;
-  background: var(--interactive-accent);
-}
-
-.life-os-task-list {
-  margin-bottom: 0;
-  padding-left: 20px;
-}
-
-.life-os-task-list li { cursor: pointer; padding: 4px 0; }
-
-.life-os-timeline {
-  position: relative;
-  margin-top: 18px;
-}
-
-.life-os-timeline-event {
-  display: grid;
-  grid-template-columns: 110px 1fr auto;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--background-modifier-border);
-  cursor: default;
-}
-
-.life-os-timeline-event:has(.life-os-timeline-copy) { cursor: pointer; }
+.life-os-card-header, .life-os-progress-row { justify-content: space-between; }
+.life-os-card-header { cursor: pointer; }
+.life-os-chip { display: inline-flex; align-items: center; width: fit-content; padding: 2px 8px; border-radius: 999px; background: var(--background-modifier-hover); color: var(--text-muted); font-size: var(--font-ui-smaller); }
+.life-os-progress-row { margin-top: 10px; }
+.life-os-progress-controls { display: flex; gap: 6px; }
+.life-os-progress-controls button, .life-os-check { min-height: 30px; border: 1px solid var(--background-modifier-border); border-radius: 8px; background: var(--interactive-normal); cursor: pointer; }
+.life-os-progress-track { height: 8px; margin-top: 6px; overflow: hidden; border-radius: 999px; background: var(--background-modifier-border); }
+.life-os-progress-bar { height: 100%; border-radius: inherit; background: var(--interactive-accent); }
+.life-os-task-list { margin-bottom: 0; padding-left: 0; list-style: none; }
+.life-os-task-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.life-os-check { width: 34px; padding: 0; }
+.life-os-task-list span { cursor: pointer; }
+.life-os-timeline { position: relative; margin-top: 18px; }
+.life-os-timeline-event { display: grid; grid-template-columns: 110px 1fr auto; padding: 12px 0; border-bottom: 1px solid var(--background-modifier-border); cursor: pointer; }
 .life-os-timeline-date { color: var(--text-muted); font-size: var(--font-ui-small); }
 .life-os-timeline-copy { display: flex; flex-direction: column; gap: 2px; }
 .life-os-timeline-copy small { color: var(--text-muted); }
